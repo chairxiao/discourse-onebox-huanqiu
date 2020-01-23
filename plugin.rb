@@ -8,45 +8,46 @@
 Onebox = Onebox
 
 module Onebox
-    module Engine
-      class HuanqiuOnebox
-        include Engine
-        # include LayoutSupport
-        include HTML
-  
-        matches_regexp(/^(http?:\/\/)?(.*)?huanqiu\.com\/?.*\/?$/)
+  module Engine
+    class HuanqiuOnebox
+      include Engine
+      # include LayoutSupport
+      include HTML
 
-        def get_logo_url
-          'https://rs1.solution9.net/api/source/huanqiu-releaseStatics/www.huanqiu.com/index/new_logo.png'
-        end
+      matches_regexp(/^(http?:\/\/)?(.*)?huanqiu\.com\/?.*\/?$/)
 
-      def to_html
-          result =  {
-            url: @url,
-            image: get_logo_url,
-            title: raw.css('title').text.gsub('\n', '').strip(),
-            # description: raw.css('.l-container article p')[0].text
-          }
-  
-				<<-HTML
-				<aside class="onebox xinhuanet">
-				  <header class="source">
-				    <a href="#{@url}">huanqiu.com</a>
-			  	</header>
-				  <article class="onebox-body">
-				  <div class="aspect-image" style="--aspect-ratio:270/377;">
-					<img src="#{result[:image]}" class="thumbnail d-lazyload">
-					</div>
-			    	<h3>
-				      <a href="#{@url}" target="_blank" rel="nofollow ugc noopener">
-				        #{result[:title]}
-				      </a>
-				    </h3>
-            <p>#{result[:description]}</p>
-            </article>
-           </aside> 
-        HTML
-        
-			end
-		end
+      def get_logo_url
+        'https://rs1.solution9.net/api/source/huanqiu-releaseStatics/www.huanqiu.com/index/new_logo.png'
+      end
+
+    def to_html
+        result =  {
+          url: @url,
+          image: get_logo_url,
+          title: raw.css('title').text.gsub('\n', '').strip(),
+          description: raw.css('.l-container article p')[0].text
+        }
+
+      <<-HTML
+      <aside class="onebox xinhuanet">
+        <header class="source">
+          <a href="#{@url}">huanqiu.com</a>
+        </header>
+        <article class="onebox-body">
+        <div class="aspect-image" style="--aspect-ratio:270/377;">
+        <img src="#{result[:image]}" class="thumbnail d-lazyload">
+        </div>
+          <h3>
+            <a href="#{@url}" target="_blank" rel="nofollow ugc noopener">
+              #{result[:title]}
+            </a>
+          </h3>
+          <p>#{result[:description]}</p>
+          </article>
+         </aside> 
+      HTML
+      
+    end
+  end
+end
 end
